@@ -64,6 +64,104 @@ export interface RawAccount {
 }
 
 /**
+ * BrokerAccount
+ **/
+export interface BrokerAccount extends RequestAccount {
+  id: string;
+  account_number: string;
+  status: string;
+  crypto_status: string;
+  last_equity: string;
+  created_at: string;
+  local_street_address: string[] | null;
+  trading_configurations: any; // Adjust the type based on actual trading_configurations data type
+  enabled_assets: string[] | null; // Adjust the type based on actual enabled_assets data type
+}
+
+
+/**
+ *  RequestAccount
+ **/
+export interface RequestAccount {
+  contact: Contact;
+  identity: Identity;
+  disclosures: Disclosures;
+  agreements: Agreement[];
+  documents: Document[];
+  trusted_contact: TrustedContact;
+  minor_identity: any; // Adjust the type based on actual minor_identity data type
+  entity_id: any; // Adjust the type based on actual entity_id data type
+  additional_information: string;
+  account_type: string;
+  auto_approve: boolean | null;
+  beneficiary: any; // Adjust the type based on actual beneficiary data type
+  trading_configurations: any; // Adjust the type based on actual trading_configurations data type
+  currency: any; // Adjust the type based on actual currency data type
+  enabled_assets: any; // Adjust the type based on actual enabled_assets data type
+  instant: any; // Adjust the type based on actual instant data type
+  entity_identity: any; // Adjust the type based on actual entity_identity data type
+  entity_contact: any; // Adjust the type based on actual entity_contact data type
+  authorized_individuals: any; // Adjust the type based on actual authorized_individuals data type
+  ultimate_beneficial_owners: any; // Adjust the type based on actual ultimate_beneficial_owners data type
+}
+
+interface Contact {
+  email_address: string;
+  phone_number: string;
+  street_address: string[];
+  city: string;
+  state: string;
+  postal_code: string;
+}
+
+interface Identity {
+  given_name: string;
+  family_name: string;
+  date_of_birth: string;
+  tax_id: string;
+  tax_id_type: string;
+  country_of_citizenship: string;
+  country_of_birth: string;
+  country_of_tax_residence: string;
+  funding_source: string[];
+  visa_type: string | null;
+  visa_expiration_date: string | null;
+  date_of_departure_from_usa: string | null;
+  permanent_resident: string | null;
+}
+
+interface Disclosures {
+  is_control_person: boolean;
+  is_affiliated_exchange_or_finra: boolean;
+  is_affiliated_exchange_or_iiroc: boolean;
+  is_politically_exposed: boolean;
+  immediate_family_exposed: boolean;
+  is_discretionary: boolean | null;
+}
+
+interface Agreement {
+  agreement: string;
+  signed_at: string;
+  ip_address: string;
+  revision: string | null;
+}
+
+interface Document {
+  document_type: string;
+  document_sub_type: string;
+  content: string;
+  content_data: any; // Adjust the type based on actual content data type
+  mime_type: string;
+}
+
+interface TrustedContact {
+  given_name: string;
+  family_name: string;
+  email_address: string;
+}
+
+
+/**
  * The following are the possible account status values. Most likely, the account status
  * is ACTIVE unless there is any problem. The account status may get in ACCOUNT_UPDATED
  * when personal information is being updated from the dashboard, in which case you may
