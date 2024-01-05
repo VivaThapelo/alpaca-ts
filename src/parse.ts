@@ -35,7 +35,32 @@ import {
   RawTradeUpdate,
   RawLatestTrade,
   LatestTrade,
+  BrokerAccount,
 } from './entities.js';
+
+function create(newAccount: BrokerAccount): BrokerAccount {
+  if (!newAccount) {
+    return undefined;
+  }
+
+  try {
+    return {
+      ...newAccount,
+      req: () => newAccount,
+      id: newAccount.id,
+      account_number: newAccount.account_number,
+      status: newAccount.status,
+      crypto_status: newAccount.crypto_status,
+      last_equity: newAccount.last_equity,
+      created_at: newAccount.created_at,
+      local_street_address: newAccount.local_street_address ?? null,
+      trading_configurations: newAccount.trading_configurations,
+      enabled_assets: newAccount.enabled_assets as string[] | null,
+    }
+  } catch (err) {
+    throw new Error(`Create Account parsing failed. ${err.message}`);
+  }
+}
 
 function account(rawAccount: RawAccount): Account {
   if (!rawAccount) {
@@ -447,6 +472,7 @@ function trade_update(rawTradeUpdate: RawTradeUpdate): TradeUpdate {
 }
 
 export default {
+  create,
   account,
   activities,
   clock,
