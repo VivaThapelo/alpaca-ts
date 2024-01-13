@@ -2,7 +2,7 @@ export interface Endpoints {
   rest: {
     beta: 'https://data.alpaca.markets/v1beta1';
     account: 'https://api.alpaca.markets/v2';
-    broker_accounts_v1: 'https://broker-api.sandbox.alpaca.markets/v1/accounts',
+    broker_accounts_v1: 'https://broker-api.sandbox.alpaca.markets/v1',
     market_data_v2: 'https://data.alpaca.markets/v2';
     market_data_v1: 'https://data.alpaca.markets/v1';
   };
@@ -105,6 +105,24 @@ export interface RequestAccount {
   entity_contact: any; // Adjust the type based on actual entity_contact data type
   authorized_individuals: any; // Adjust the type based on actual authorized_individuals data type
   ultimate_beneficial_owners: any; // Adjust the type based on actual ultimate_beneficial_owners data type
+}
+
+export interface BankAccount extends BankAccountRequest {
+  req: () => BankAccount;
+  id: string;
+  account_id: string;
+  created_at: string; // You may want to use a Date type depending on your needs
+  updated_at: string; // You may want to use a Date type depending on your needs
+  status: "QUEUED" | "PROCESSING" | "APPROVED" | "DECLINED";
+  processor_token: string | null;
+}
+
+export interface BankAccountRequest {
+  account_owner_name: string;
+  bank_account_type: "CHECKING" | "SAVINGS" | "MONEY_MARKET" | "CERTIFICATE_OF_DEPOSIT";
+  bank_account_number: string;
+  bank_routing_number: string;
+  nickname: string;
 }
 
 interface Contact {

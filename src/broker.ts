@@ -1,5 +1,5 @@
 import endpoints from "./endpoints";
-import { BrokerAccount, DefaultCredentials, Endpoints, OAuthCredentials, RequestAccount } from "./entities";
+import { Asset, BankAccount, BankAccountRequest, BrokerAccount, DefaultCredentials, Endpoints, OAuthCredentials, RequestAccount } from "./entities";
 import parse from "./parse";
 import isofetch from 'isomorphic-unfetch';
 import qs from 'qs';
@@ -16,17 +16,36 @@ export class AlpacaBroker {
         credentials?: DefaultCredentials | OAuthCredentials;
       },
     ) {}
+
+    async getAssets(): Promise<Asset[]> {
+        return this.request({
+          method: 'GET',
+          url: `${this.baseURLs.rest.broker_accounts_v1}/assets`,
+          isJSON: true,
+        })
+    }
   
     async createAccount(newAccount: RequestAccount): Promise<BrokerAccount> {
       return parse.create(
         await this.request({
           method: 'POST',
-          url: this.baseURLs.rest.broker_accounts_v1,
+          url: `${this.baseURLs.rest.broker_accounts_v1}/accounts`,
           data: newAccount,
           isJSON: true,
         })
       );
     }
+
+    async BankACH(accountId: string,reqBankAccount: BankAccountRequest): Promise<BankAccount> {
+        return parse.accountACH(
+            await this.request({
+                method: 'POST',
+                url: `${this.baseURLs.rest.broker_accounts_v1}/accounts/${accountId}/ach_relationships`,
+                data: reqBankAccount,
+                isJSON: true,
+            })
+        );
+    } 
   
     private async request<T = any>(params: {
       method: 'GET' | 'DELETE' | 'PUT' | 'PATCH' | 'POST';

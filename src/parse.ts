@@ -36,6 +36,7 @@ import {
   RawLatestTrade,
   LatestTrade,
   BrokerAccount,
+  BankAccount,
 } from './entities.js';
 
 function create(newAccount: BrokerAccount): BrokerAccount {
@@ -59,6 +60,22 @@ function create(newAccount: BrokerAccount): BrokerAccount {
     }
   } catch (err) {
     throw new Error(`Create Account parsing failed. ${err.message}`);
+  }
+}
+
+function accountACH(reqBankAccount: BankAccount): BankAccount {
+  if(!reqBankAccount) {
+    return undefined;
+  }
+
+  try {
+    return {
+      ...reqBankAccount,
+      req: () => reqBankAccount,
+
+    }
+  } catch (err) {
+    throw new Error(`Account ACHH parsing failed. ${err.message}`);
   }
 }
 
@@ -473,6 +490,7 @@ function trade_update(rawTradeUpdate: RawTradeUpdate): TradeUpdate {
 
 export default {
   create,
+  accountACH,
   account,
   activities,
   clock,
